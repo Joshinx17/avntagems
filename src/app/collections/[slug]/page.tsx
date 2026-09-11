@@ -1,0 +1,2 @@
+import { Catalogue } from '@/components/store/Catalogue';
+export default async function CollectionPage({ params }: { params: Promise<{slug:string}> }) { const { slug } = await params; const title = slug.replaceAll('-', ' ').replace(/\b\w/g, (char) => char.toUpperCase()); const initial = slug === 'gemstones' ? '' : slug; return <Catalogue title={title} initial={initial} description={`Explore the ${title.toLowerCase()} edit. Demo data is intentionally separated and ready for verified product information.`} />; }

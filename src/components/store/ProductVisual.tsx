@@ -1,0 +1,2 @@
+import type { Product } from '@/lib/content';
+export function ProductVisual({ product, className = '' }: { product: Pick<Product, 'name' | 'gemstone' | 'color'>; className?: string }) { return <div className={`product-visual ${className}`} style={{ '--stone': product.color } as React.CSSProperties}><span className="stone-glow" /><span className="stone" /><span className="product-visual-label">{product.gemstone}</span></div>; }

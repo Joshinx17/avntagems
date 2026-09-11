@@ -1,56 +1,7 @@
-﻿import Link from 'next/link';
-import { Search, User, Heart, ShoppingBag, Menu } from 'lucide-react';
-import { cn } from '@/lib/utils';
-
-export function Header() {
-  return (
-    <header className="w-full border-b border-border bg-background sticky top-0 z-50">
-      {/* Announcement Bar */}
-      <div className="bg-primary text-white text-xs font-medium py-2 px-4 text-center">
-        Free Shipping Across India | Authenticity Guaranteed | Secure Payments
-      </div>
-
-      {/* Main Header */}
-      <div className="container-custom mx-auto px-4 h-20 flex items-center justify-between">
-        {/* Mobile Menu Toggle */}
-        <button className="lg:hidden p-2 -ml-2 text-foreground" aria-label="Menu">
-          <Menu className="w-6 h-6" />
-        </button>
-
-        {/* Logo */}
-        <div className="flex-1 lg:flex-none text-center lg:text-left">
-          <Link href="/" className="font-serif text-2xl tracking-widest font-bold text-foreground inline-block">
-            AVNTA<span className="text-primary font-light">GEMS</span>
-          </Link>
-        </div>
-
-        {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center space-x-8 text-sm font-medium text-foreground/80">
-          <Link href="/" className="hover:text-primary transition-colors">Home</Link>
-          <Link href="/collections/gemstones" className="hover:text-primary transition-colors">Gemstones</Link>
-          <Link href="/collections/jewellery" className="hover:text-primary transition-colors">Jewellery</Link>
-          <Link href="/collections/purpose" className="hover:text-primary transition-colors">By Purpose</Link>
-          <Link href="/collections/zodiac" className="hover:text-primary transition-colors">By Zodiac</Link>
-          <Link href="/about" className="hover:text-primary transition-colors">Our Story</Link>
-        </nav>
-
-        {/* Icons */}
-        <div className="flex items-center space-x-4 lg:space-x-6 text-foreground">
-          <button aria-label="Search" className="hover:text-primary transition-colors">
-            <Search className="w-5 h-5" />
-          </button>
-          <Link href="/account" aria-label="Account" className="hidden lg:block hover:text-primary transition-colors">
-            <User className="w-5 h-5" />
-          </Link>
-          <Link href="/wishlist" aria-label="Wishlist" className="hidden lg:block hover:text-primary transition-colors">
-            <Heart className="w-5 h-5" />
-          </Link>
-          <button aria-label="Cart" className="hover:text-primary transition-colors relative">
-            <ShoppingBag className="w-5 h-5" />
-            <span className="absolute -top-1.5 -right-1.5 bg-primary text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
-          </button>
-        </div>
-      </div>
-    </header>
-  );
-}
+'use client';
+import Link from 'next/link';
+import { Heart, Menu, Search, ShoppingBag, User, X } from 'lucide-react';
+import { useState } from 'react';
+import { useCommerce } from '@/components/store/CommerceProvider';
+const groups = [{ title: 'Shop by category', links: [['Gemstones','/collections/gemstones'],['Rings','/collections/rings'],['Bracelets','/collections/bracelets'],['Pendants','/collections/pendants']] }, { title: 'Discover by', links: [['Purpose','/collections/purpose'],['Zodiac','/collections/zodiac'],['New arrivals','/collections/new'],['Bestsellers','/collections/bestsellers']] }, { title: 'Gemstones', links: [['Ruby','/search?q=ruby'],['Emerald','/search?q=emerald'],['Blue Sapphire','/search?q=sapphire'],['Amethyst','/search?q=amethyst']] }];
+export function Header() { const [menu, setMenu] = useState(false); const [mega, setMega] = useState(false); const { count, setCartOpen } = useCommerce(); return <header className="site-header"><div className="announcement">Thoughtfully curated gemstones & jewellery <span>·</span> Demo storefront — replace content before launch</div><div className="header-main"><button className="mobile-menu-button" onClick={() => setMenu(true)} aria-label="Open menu"><Menu /></button><Link href="/" className="wordmark">AVNTA <em>GEMS</em></Link><nav className="desktop-nav"><Link href="/">Home</Link><button onMouseEnter={() => setMega(true)} onClick={() => setMega(!mega)}>Shop</button><Link href="/collections/gemstones">Gemstones</Link><Link href="/collections/jewellery">Jewellery</Link><Link href="/collections/purpose">Shop by purpose</Link><Link href="/journal">Journal</Link></nav><div className="header-actions"><Link href="/search" aria-label="Search"><Search /></Link><Link className="hide-mobile" href="/account" aria-label="Account"><User /></Link><Link className="hide-mobile" href="/wishlist" aria-label="Wishlist"><Heart /></Link><button onClick={() => setCartOpen(true)} aria-label={`Cart (${count} items)`} className="cart-link"><ShoppingBag /><i>{count}</i></button></div></div>{mega && <div className="mega-menu" onMouseLeave={() => setMega(false)}>{groups.map((group) => <div key={group.title}><p className="eyebrow">{group.title}</p>{group.links.map(([label, href]) => <Link href={href} key={label} onClick={() => setMega(false)}>{label}</Link>)}</div>)}<div className="mega-feature"><span>AVNTA EDIT</span><strong>Find a stone<br/>with meaning.</strong><Link href="/collections/gemstones">Explore gemstones →</Link></div></div>}<div className={`mobile-drawer ${menu ? 'open' : ''}`}><div><button onClick={() => setMenu(false)} aria-label="Close"><X /></button><Link href="/" className="wordmark" onClick={() => setMenu(false)}>AVNTA <em>GEMS</em></Link></div><nav>{['Home','Shop','Gemstones','Jewellery','Shop by purpose','Shop by zodiac','Our story','Journal','Contact'].map((item) => <Link key={item} href={item === 'Home' ? '/' : item === 'Shop' ? '/shop' : `/${item.toLowerCase().replaceAll(' ','-')}`} onClick={() => setMenu(false)}>{item}</Link>)}</nav></div></header>; }

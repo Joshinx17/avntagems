@@ -1,0 +1,1 @@
+import Link from 'next/link'; export default function NotFound(){return <div className="page-wrap static-page"><p className="eyebrow">404</p><h1>This piece is no longer here.</h1><p>Try exploring the collection instead.</p><Link href="/shop" className="button button-dark">Shop all</Link></div>}

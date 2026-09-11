@@ -1,0 +1,2 @@
+import type { MetadataRoute } from 'next'; import { articles, products } from '@/lib/content';
+export default function sitemap(): MetadataRoute.Sitemap { const base = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.avntagems.com'; return ['','/shop','/about','/authenticity','/contact','/journal','/faq',...products.map((p)=>`/products/${p.slug}`),...articles.map((a)=>`/journal/${a.slug}`)].map((path)=>({url:`${base}${path}`,lastModified:new Date(),changeFrequency:'weekly' as const,priority:path===''?1:.7})); }
